@@ -1,0 +1,3 @@
+CREATE TABLE IF NOT EXISTS `Group` (
+	`name` VARCHAR(30) NOT NULL,
+PRIMARY KEY(`name`));
