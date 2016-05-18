@@ -33,7 +33,7 @@ $row = $result->fetch_assoc();
 $username = $row["username"];
 $ticket = $row["ticket"];
 $sql = "SELECT
-	`UserGroup`.`group` as \"group\"
+	`UserGroup`.`groupName` as \"group\"
 FROM `UserGroup`
 WHERE
     `UserGroup`.`user` = :username;";

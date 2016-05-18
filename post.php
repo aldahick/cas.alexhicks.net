@@ -50,7 +50,7 @@ if ($_POST["operation"] == "login" && check_params(["username", "password", "cas
 			$i += 2;
 		}
 	}
-	$groupSqlString = "INSERT INTO `UserGroup` (`user`, `group`) VALUES " . implode(", ", $groupSql) . ";";
+	$groupSqlString = "INSERT INTO `UserGroup` (`user`, `groupName`) VALUES " . implode(", ", $groupSql) . ";";
 	$salt = generate_salt();
 	$hashed = hash_password($_POST["password"], $salt);
 	$params = array(
