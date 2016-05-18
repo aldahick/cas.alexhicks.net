@@ -23,25 +23,24 @@ WHERE
 	`ticket`=':ticket' AND
 	`url`=':url' AND
 	`valid`=1;";
-$result = $db->query($sql, ["ticket" => $_GET["casticket"], "url" => $_GET["casurl"]]);
-if (!$result || $result->num_rows == 0) {
+$rows = $db->query($sql, ["ticket" => $_GET["casticket"], "url" => $_GET["casurl"]]);
+if (!$rows || count($rows) == 0) {
 	echo("no\n404 " . $_GET["casurl"]);
 	exit;
 }
 
-$row = $result->fetch_assoc();
-$username = $row["username"];
-$ticket = $row["ticket"];
+$username = $rows[0]["username"];
+$ticket = $rows[0]["ticket"];
 $sql = "SELECT
 	`UserGroup`.`groupName` as \"group\"
 FROM `UserGroup`
 WHERE
     `UserGroup`.`user` = :username;";
 
-$result = $db->query($sql, ["username" => $username]);
+$rows = $db->query($sql, ["username" => $username]);
 $groups = [];
-if ($result && $result->num_rows != 0) {
-	while ($row = $result->fetch_assoc()) {
+if ($rows && count($rows) > 0) {
+	foreach ($rows as $k => $row) {
 		$groups[] = $row["group"];
 	}
 }

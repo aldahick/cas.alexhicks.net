@@ -17,19 +17,18 @@ if (!$db) {
 
 if ($_POST["operation"] == "login" && check_params(["username", "password", "casurl"], $_POST)) {
     $sql = "SELECT `password`,`salt` FROM `User` WHERE `username`=':username';";
-	if (!($result = $db->query($sql, ["username" => $_POST["username"]]))) {
+	if (!($rows = $db->query($sql, ["username" => $_POST["username"]]))) {
 		echo("Login failed: database error");
 		return;
 	}
-	if ($result->num_rows == 0) {
+	if (count($rows) == 0) {
 		echo("Login failed");
 		return;
 	}
-	$row = $result->fetch_assoc();
-	$hashed = hash_password($_POST["password"], $row["salt"]);
-	if ($hashed == $row["password"]) { // login is good, yay us
+	$hashed = hash_password($_POST["password"], $rows[0]["salt"]);
+	if ($hashed == $rows[0]["password"]) { // login is good, yay us
 		$ticket = get_ticket($db, $_POST["username"], $_POST["casurl"]);
-		$_SESSION["userid"] = $row["userid"];
+		$_SESSION["userid"] = $rows[0]["userid"];
 		redirect_cas_url($_POST["casurl"], $ticket);
 	} else {
 		header("Location: login?casurl=" . urlencode($_POST["casurl"]) . "&error=" . urlencode("Login failed"));

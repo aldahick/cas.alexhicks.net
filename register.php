@@ -12,10 +12,10 @@ if (!$db) {
 	exit;
 }
 
-$result = $db->query("SELECT `name` FROM `Group`;", []);
+$rows = $db->query("SELECT `name` FROM `Group`;", []);
 $groups = [];
-if ($result && $result->num_rows != 0) {
-	while ($row = $result->fetch_assoc()) {
+if ($rows && count($rows) > 0) {
+	foreach ($rows as $k => $row) {
 		$groups[] = $row["name"];
 	}
 }
